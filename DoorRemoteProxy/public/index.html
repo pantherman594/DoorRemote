@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="HandheldFriendly" content="true">
+
+  <title>Door Opener</title>
+  <script>
+    /* var socket = io("https://ext.d-shen.xyz");
+    socket.on('connect', function(){});
+    socket.on('event', function(data){});
+    socket.on('disconnect', function(){}); */
+
+    window.onload = function() {
+      document.getElementById("unlockLink").onclick = function() {
+        document.getElementById("response").innerHTML = "Sending request...";
+        document.getElementById("error").innerHTML = "";
+        let xmlHttp = new XMLHttpRequest();
+        xmlHttp.onreadystatechange = function() { 
+          if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
+            const resp = JSON.parse(xmlHttp.responseText);
+            document.getElementById("response").innerHTML = resp.status;
+            if (resp.error) {
+              document.getElementById("error").innerHTML = resp.error;
+            }
+            setTimeout(() => document.getElementById("response").innerHTML = "", 5000);
+          }
+        }
+        xmlHttp.open("POST", "/", true); // true for asynchronous 
+        xmlHttp.send(null);
+
+        /* socket.emit("unlock", function(resp) {
+          document.getElementById("response").innerHTML = resp.status;
+          if (resp.error) {
+            document.getElementById("error").innerHTML = resp.error;
+          }
+        }); */
+	return false;
+      };
+    };
+  </script>
+  <style>
+    div {
+      font-size: 20px;
+      margin: 40px;
+      text-transform: uppercase;
+    }
+    #response {
+      color: green;
+    }
+    #error {
+      color: red;
+    }
+    #unlockLink {
+      font-size: 40px;
+      color: white;
+      text-decoration: none;
+      padding: 20px;
+      background: gray;
+      text-align: center;
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <div>
+    <a href="#" id="unlockLink">Unlock</a>
+    <p id="response"></p>
+    <p id="error"></p>
+  </div>
+</body>
+</html>
