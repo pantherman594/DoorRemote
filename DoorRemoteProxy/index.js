@@ -1,18 +1,36 @@
 const express = require('express');
 const cors = require('cors');
+const socketIo = require('socket.io');
+const http = require('http');
 const app = express();
+const ws = require('express-ws')(app);
 
 // piSocket forwards sockets to the pi
-const piServer = require('http').createServer();
-const piSocket = require('socket.io')(piServer);
+const piServer = http.createServer();
+const piSocket = socketIo(piServer);
 let piClient;
+
+const videoClients = new Set();
+let videoSetup = [];
 
 piSocket.on('connection', function(client) {
   console.log("Connected to pi");
+  videoSetup = [];
 
   client.on('event', function(data) {
     console.log("Event");
     // Does nothing for now
+  });
+
+  client.on('videostream', (data) => {
+    if (videoSetup.length < 2) {
+      videoSetup[videoSetup.length] = data.buffer;
+    }
+
+    console.log(videoClients.size);
+    videoClients.forEach((client) => {
+      client.send(data.buffer, { binary: true }, (error) => { if (error) console.error(error); });
+    });
   });
 
   client.on('disconnect', function() {
@@ -38,7 +56,7 @@ app.use(cors({
 }));
 
 const unlock = (cb) => {
-  piClient.emit('unlock', '2.2', '4', '1.5', cb);
+  piClient.emit('unlock', '3.7', '0', '1.9', cb);
 };
 
 app.use(express.static('public'));
@@ -70,6 +88,28 @@ app.post('/df', (req, res) => {
       },
     },
     source: 'Door Remote Proxy',
+  });
+});
+
+app.ws('/videostream', (s, req) => {
+  console.log('Stream client connected.');
+  
+  s.send(JSON.stringify({
+    action: 'init',
+    width: '512',
+    height: '512'
+  }));
+
+  if (videoSetup.length === 2) {
+    s.send(videoSetup[0], { binary: true }, (error) => { if (error) console.error(error); });
+    s.send(videoSetup[1], { binary: true }, (error) => { if (error) console.error(error); });
+  }
+
+  videoClients.add(s);
+
+  s.on('close', () => {
+    console.log('Client left');
+    videoClients.delete(s);
   });
 });
 

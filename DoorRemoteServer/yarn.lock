@@ -140,6 +140,20 @@ parseuri@0.0.5:
   dependencies:
     better-assert "~1.0.0"
 
+raspivid-stream@^0.2.1:
+  version "0.2.1"
+  resolved "https://registry.yarnpkg.com/raspivid-stream/-/raspivid-stream-0.2.1.tgz#773ef1b0517268bd2bad5391fff431b3ea019e4f"
+  integrity sha1-dz7xsFFyaL0rrVOR//Qxs+oBnk8=
+  dependencies:
+    raspivid "^1.0.0"
+    stream-concat "^0.1.0"
+    stream-split "^1.1.0"
+
+raspivid@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/raspivid/-/raspivid-1.0.0.tgz#9f119beecbd5b103a50006af7371483a2ef6931f"
+  integrity sha1-nxGb7svVsQOlAAavc3FIOi72kx8=
+
 safe-buffer@~5.1.0:
   version "5.1.2"
   resolved "https://registry.yarnpkg.com/safe-buffer/-/safe-buffer-5.1.2.tgz#991ec69d296e0313747d59bdfd2b745c35f8828d"
@@ -173,6 +187,16 @@ socket.io-parser@~3.2.0:
     component-emitter "1.2.1"
     debug "~3.1.0"
     isarray "2.0.1"
+
+stream-concat@^0.1.0:
+  version "0.1.1"
+  resolved "https://registry.yarnpkg.com/stream-concat/-/stream-concat-0.1.1.tgz#2a000808b30d401314daca35885e5db5caa8b607"
+  integrity sha512-rQUBqNe2AiUrRbvUVZ3pkA1roaah2dbFVZEtDWsSE+9uzZFCEew8sSclThHJhG1zXHBKt9p+Sx12t9KRzvnigQ==
+
+stream-split@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/stream-split/-/stream-split-1.1.0.tgz#d9b5c5e0fa0991a4da95f96e91f5f151804d3d3c"
+  integrity sha1-2bXF4PoJkaTalflukfXxUYBNPTw=
 
 to-array@0.1.4:
   version "0.1.4"
